@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MortgageCalulator.Tests", "MortgageCalulator.Tests\MortgageCalulator.Tests.csproj", "{AA6414A8-FB2A-4AAD-8FDB-1E79C16394D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MortgageCalulator.Tests", "test\MortgageCalulator.Tests\MortgageCalulator.Tests\MortgageCalulator.Tests.csproj", "{AA6414A8-FB2A-4AAD-8FDB-1E79C16394D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
