@@ -4,7 +4,7 @@
 	I want to be able to compare 2 mortgage offers over time.
 
 @mytag
-Scenario: Add two numbers
+Scenario: Compare 2 Mortgages
 	Given I want to borrow £228,000
 	And I want to repay it over 22 years
 	And I am comparing the following mortgages

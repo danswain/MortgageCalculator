@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 
@@ -9,6 +10,7 @@ namespace MortgageCalulator.Tests.Steps
     {
         private decimal _principalAmount;
         private int _loanTermInYears;
+        private IEnumerable<Mortgage> _mortgageProducts;
 
         [Given(@"I want to borrow £(.*)")]
         public void GivenIWantToBorrow(Decimal principalAmount)
@@ -25,10 +27,13 @@ namespace MortgageCalulator.Tests.Steps
         [Given(@"I am comparing the following mortgages")]
         public void GivenIAmComparingTheFollowingMortgages(Table mortgagesToCompare)
         {
-            mortgagesToCompare.Rows.Select(row => new
+            _mortgageProducts = mortgagesToCompare.Rows.Select(row => new Mortgage
             {
                 MortgageProvider = row["MortgageProvider"],
-
+                MortgageRate = row["MortgageRate"],
+                MortgageTerm = row["MortgageTerm"],
+                ProductFee = row["ProductFee"],
+                MaximumAnnualOverpayments = row["MaximumAnnualOverpayments"],
             });
         }
 
@@ -44,5 +49,14 @@ namespace MortgageCalulator.Tests.Steps
             ScenarioContext.Current.Pending();
         }
 
+    }
+
+    public class Mortgage
+    {
+        public string MortgageProvider { get; set; }
+        public string MortgageRate { get; set; }
+        public string MortgageTerm { get; set; }
+        public string ProductFee { get; set; }
+        public string MaximumAnnualOverpayments { get; set; }
     }
 }
