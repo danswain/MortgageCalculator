@@ -47,13 +47,6 @@ namespace MortgageCalulator.Tests.Steps
             _mortgageComparisonResults = GetMortgageComparisonResults(_mortgageProducts);
         }
 
-        private IEnumerable<MortgageComparisonResult> GetMortgageComparisonResults(IEnumerable<MortgageProducts> mortgageProducts)
-        {
-            var mortgageCalculator = new MortgageCalculator();
-            var result = mortgageCalculator.Calculate(_principalAmount, _loanTermInYears, decimal.Parse(mortgageProducts.First().MortgageRate.Replace("%",string.Empty)));
-            return new List<MortgageComparisonResult>{result};
-        }
-
         [Then(@"the result should be")]
         public void ThenTheResultShouldBe(Table mortgageComparisonResult)
         {
@@ -61,6 +54,13 @@ namespace MortgageCalulator.Tests.Steps
             var actual = _mortgageComparisonResults.First();
 
             Assert.That(actual.Interest, Is.EqualTo(expected.Interest), "Interest is not the same");
+        }
+
+        private IEnumerable<MortgageComparisonResult> GetMortgageComparisonResults(IEnumerable<MortgageProducts> mortgageProducts)
+        {
+            var mortgageCalculator = new MortgageCalculator();
+            var result = mortgageCalculator.Calculate(_principalAmount, _loanTermInYears, decimal.Parse(mortgageProducts.First().MortgageRate.Replace("%",string.Empty)));
+            return new List<MortgageComparisonResult>{result};
         }
 
         private static IEnumerable<MortgageComparisonResult> ConvertToMortgageResult(Table mortgageComparisonResult)
