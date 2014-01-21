@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using TechTalk.SpecFlow;
 
 namespace MortgageCalulator.Tests.Steps
@@ -10,7 +11,8 @@ namespace MortgageCalulator.Tests.Steps
     {
         private decimal _principalAmount;
         private int _loanTermInYears;
-        private IEnumerable<Mortgage> _mortgageProducts;
+        private IEnumerable<MortgageProducts> _mortgageProducts;
+        private IEnumerable<MortgageComparisonResult> _mortgageComparisonResults;
 
         [Given(@"I want to borrow £(.*)")]
         public void GivenIWantToBorrow(Decimal principalAmount)
@@ -25,9 +27,10 @@ namespace MortgageCalulator.Tests.Steps
         }
 
         [Given(@"I am comparing the following mortgages")]
+        [Given(@"I am considering the following mortgage product")]
         public void GivenIAmComparingTheFollowingMortgages(Table mortgagesToCompare)
         {
-            _mortgageProducts = mortgagesToCompare.Rows.Select(row => new Mortgage
+            _mortgageProducts = mortgagesToCompare.Rows.Select(row => new MortgageProducts
             {
                 MortgageProvider = row["MortgageProvider"],
                 MortgageRate = row["MortgageRate"],
@@ -38,25 +41,38 @@ namespace MortgageCalulator.Tests.Steps
         }
 
         [When(@"I click compare the mortgages")]
+        [When(@"I click calculate")]
         public void WhenIClickCompareTheMortgages()
         {
-            ScenarioContext.Current.Pending();
+            _mortgageComparisonResults = GetMortgageComparisonResults(_mortgageProducts);
+        }
+
+        private IEnumerable<MortgageComparisonResult> GetMortgageComparisonResults(IEnumerable<MortgageProducts> mortgageProducts)
+        {
+            var mortgageCalculator = new MortgageCalculator();
+            var result = mortgageCalculator.Calculate(_principalAmount, _loanTermInYears, decimal.Parse(mortgageProducts.First().MortgageRate.Replace("%",string.Empty)));
+            return new List<MortgageComparisonResult>{result};
         }
 
         [Then(@"the result should be")]
         public void ThenTheResultShouldBe(Table mortgageComparisonResult)
         {
-            ScenarioContext.Current.Pending();
+            var expected = ConvertToMortgageResult(mortgageComparisonResult).First();
+            var actual = _mortgageComparisonResults.First();
+
+            Assert.That(actual.Interest, Is.EqualTo(expected.Interest), "Interest is not the same");
         }
 
-    }
+        private static IEnumerable<MortgageComparisonResult> ConvertToMortgageResult(Table mortgageComparisonResult)
+        {
+            var result = mortgageComparisonResult.Rows.Select(row => new MortgageComparisonResult
+            {
+                MortgageProvider = row["MortgageProvider"],
+                Interest = row["Interest"],
+                Year = Convert.ToInt32(row["Year"])
+            });
 
-    public class Mortgage
-    {
-        public string MortgageProvider { get; set; }
-        public string MortgageRate { get; set; }
-        public string MortgageTerm { get; set; }
-        public string ProductFee { get; set; }
-        public string MaximumAnnualOverpayments { get; set; }
+            return result;
+        }
     }
 }

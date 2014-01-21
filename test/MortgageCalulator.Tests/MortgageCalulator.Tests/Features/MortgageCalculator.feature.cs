@@ -33,8 +33,8 @@ namespace MortgageCalulator.Tests.Features
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MortgageCalculator", "In order Calculate the total cost of a Mortgage over time\r\nAs a Existing homeowne" +
-                    "r who\'s up for a Remortgage\r\nI want to be able to compare 2 mortgage offers over" +
-                    " time.", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "r who\'s up for a Remortgage\r\nI want to know the amount of interest I will pay fo" +
+                    "r a given mortgage product", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -67,11 +67,11 @@ namespace MortgageCalulator.Tests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Compare 2 Mortgages")]
+        [NUnit.Framework.DescriptionAttribute("Calculate Interest for a mortgage")]
         [NUnit.Framework.CategoryAttribute("mytag")]
-        public virtual void Compare2Mortgages()
+        public virtual void CalculateInterestForAMortgage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Compare 2 Mortgages", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Interest for a mortgage", new string[] {
                         "mytag"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
@@ -92,16 +92,10 @@ this.ScenarioSetup(scenarioInfo);
                         "22 years",
                         "£995",
                         "10%"});
-            table1.AddRow(new string[] {
-                        "Yorkshire",
-                        "2.84%",
-                        "22 years",
-                        "£295",
-                        "10% or £10,000 which ever is less"});
 #line 10
- testRunner.And("I am comparing the following mortgages", ((string)(null)), table1, "And ");
-#line 14
- testRunner.When("I click compare the mortgages", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I am considering the following mortgage product", ((string)(null)), table1, "And ");
+#line 13
+ testRunner.When("I click calculate", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "MortgageProvider",
@@ -117,7 +111,7 @@ this.ScenarioSetup(scenarioInfo);
                         "6811.41",
                         "12976.07",
                         "221188.59"});
-#line 15
+#line 14
  testRunner.Then("the result should be", ((string)(null)), table2, "Then ");
 #line hidden
             this.ScenarioCleanup();
